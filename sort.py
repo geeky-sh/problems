@@ -3,12 +3,12 @@ import pytest
 def selection_sort(nums):
     total = len(nums)
     for i in range(0, total):
-        for j in range(i, total):
-            if j == i or nums[j] < min_value:
-                j_value, min_value = j, nums[j]
+        min_idx = i
+        for j in range(i+1, total):
+            if nums[j] < nums[min_idx]:
+                min_idx = j
 
-        nums[j_value] = nums[i]
-        nums[i] = min_value
+        nums[min_idx], nums[i] = nums[i], nums[min_idx]
     return nums
 
 
