@@ -1,3 +1,5 @@
+import re
+import ipdb
 import pytest
 
 def selection_sort(nums):
@@ -24,6 +26,47 @@ def bubble_sort(nums):
         iterations -= 1
     return nums
 
+def _sorted_sort(a, b):
+    i, j = 0, 0
+    result = []
+    while i < len(a) and j < len(b):
+        if a[i] < b[j]:
+            result.append(a[i])
+            i += 1
+        elif b[j] < a[i]:
+            result.append(b[j])
+            j += 1
+        else:
+            result.append(a[i])
+            result.append(b[j])
+            i += 1
+            j += 1
+
+    if i == len(a):
+        while j < len(b):
+            result.append(b[j])
+            j += 1
+    elif j == len(b):
+        while i < len(a):
+            result.append(a[i])
+            i += 1
+
+    return result
+
+
+def merge_sort(nums):
+    if len(nums) == 0:
+        return []
+    if len(nums) == 1:
+        return nums
+
+    mid = int(len(nums) - 1 / 2)
+
+    a = merge_sort(nums[0:mid])
+    b = merge_sort(nums[mid:])
+
+    return _sorted_sort(a, b)
+
 
 data = [
     ([4, 3, 2, 1], [1, 2, 3, 4]),
@@ -41,4 +84,8 @@ def test_selection_sort(inp, out):
 @pytest.mark.parametrize("inp, out", data.copy())
 def test_bubble_sort(inp, out):
     assert bubble_sort(inp) == out
+
+@pytest.mark.parametrize("inp, out", data.copy())
+def test_merge_sort(inp, out):
+    assert merge_sort(inp) == out
 
