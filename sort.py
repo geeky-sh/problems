@@ -67,6 +67,45 @@ def merge_sort(nums):
 
     return _sorted_sort(a, b)
 
+def _partition(low, high, nums):
+    if low >= high:
+        return low, nums
+
+    pivot = high
+    i, j = low, pivot
+    print(i, j)
+    while i <= j:
+        while nums[i] < pivot and i<=j:
+            i += 1
+        while nums[j] > pivot and i<=j:
+            j -= 1
+        else:
+            nums[i], nums[j] == nums[j], nums[i]
+            i += 1
+            j -= 1
+    if j != pivot:
+        nums[pivot], nums[j] = nums[j], nums[pivot]
+    return j, nums
+
+
+def quick_sort(nums, low=None, high=None):
+    if not low:
+        low = 0
+    if not high:
+        high = len(nums) - 1
+    if low >= high:
+        return nums
+
+    idx, nums = _partition(low, high, nums)
+
+    if idx - 1 <= high:
+        quick_sort(nums, low, idx - 1)
+    quick_sort(nums, idx+1, high)
+
+    return nums
+
+
+
 
 data = [
     ([4, 3, 2, 1], [1, 2, 3, 4]),
@@ -89,3 +128,7 @@ def test_bubble_sort(inp, out):
 def test_merge_sort(inp, out):
     assert merge_sort(inp) == out
 
+
+@pytest.mark.parametrize("inp, out", data.copy())
+def test_quick_sort(inp, out):
+    assert quick_sort(inp) == out
