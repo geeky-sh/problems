@@ -107,6 +107,39 @@ def quick_sort(nums, low=None, high=None):
 
 
 
+def _partition(nums, low, high):
+    print(nums, low, high)
+    i, j, pivot = low, high - 1, high
+    while i <= j or j < low:
+        if nums[i] > nums[pivot] and nums[j] < nums[pivot]:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+            j -= 1
+        else:
+            if nums[i] < nums[pivot]:
+                i += 1
+            if nums[j] > nums[pivot]:
+                j -= 1
+
+    if i != pivot:
+        nums[i], nums[pivot] = nums[pivot], nums[i]
+
+    return i, nums
+
+def quick_sort(nums, low = 0, high = None):
+    if not high:
+        high = len(nums) - 1
+    if low < 0 or high >= len(nums) or low >= high:
+        return nums
+
+    idx, nums = _partition(nums, low, high)
+
+    nums = quick_sort(nums, low, idx - 1)
+    nums = quick_sort(nums, idx + 1, high)
+
+    return nums
+
+
 data = [
     ([4, 3, 2, 1], [1, 2, 3, 4]),
     ([1, 3, 2, 4], [1, 2, 3, 4]),
@@ -116,17 +149,21 @@ data = [
     ([1, 3, 2, 6, 1], [1, 1, 2, 3, 6])
 ]
 
-@pytest.mark.parametrize("inp, out", data.copy())
-def test_selection_sort(inp, out):
-    assert selection_sort(inp) == out
+# @pytest.mark.parametrize("inp, out", data.copy())
+# def test_selection_sort(inp, out):
+#     assert selection_sort(inp) == out
+
+# @pytest.mark.parametrize("inp, out", data.copy())
+# def test_bubble_sort(inp, out):
+#     assert bubble_sort(inp) == out
+
+# @pytest.mark.parametrize("inp, out", data.copy())
+# def test_merge_sort(inp, out):
+#     assert merge_sort(inp) == out
 
 @pytest.mark.parametrize("inp, out", data.copy())
-def test_bubble_sort(inp, out):
-    assert bubble_sort(inp) == out
-
-@pytest.mark.parametrize("inp, out", data.copy())
-def test_merge_sort(inp, out):
-    assert merge_sort(inp) == out
+def test_quick_sort(inp, out):
+    assert quick_sort(inp) == out
 
 
 @pytest.mark.parametrize("inp, out", data.copy())
