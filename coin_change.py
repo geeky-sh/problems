@@ -1,3 +1,6 @@
+"""
+To get the total number of combinations
+"""
 import pytest
 
 
