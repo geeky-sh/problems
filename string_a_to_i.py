@@ -1,6 +1,7 @@
 import math
 from typing import Pattern
 import pytest
+import re
 
 class Solution:
     def myAtoi(self, s: str) -> int:
@@ -8,44 +9,19 @@ class Solution:
         Find the number_list and store it in an array
         Convert that number into an integer
         """
-        number_list = []
-        is_negative = None
-        for ch in s:
-            if number_list:
-                if ch.isdigit():
-                    number_list.append(int(ch))
-                else:
-                    break
-            else:
-                if ch.isspace():
-                    if is_negative is not None:
-                        break
-                    else:
-                        continue
-                elif ch.isdigit():
-                    number_list.append(int(ch))
-                elif is_negative is None and ch == "-":
-                    is_negative = True
-                elif is_negative is None and ch == '+':
-                    is_negative = False
-                else:
-                    break
+        pattern = "\s*([\-\+]{0,1}\d+).*"
+        match = re.match(pattern, s)
+        if not match:
+            return 0
 
-        number_list.reverse()
-        low, high, number =  int(-math.pow(2, 31)), int(math.pow(2, 31) - 1), 0
-        for i, digit in enumerate(number_list):
-            addr = math.pow(10, i) * digit
-            if is_negative:
-                addr = - addr
-            if number + addr > high:
-                return high
-            elif number + addr < low:
-                return low
-            else:
-                number += addr
-        return int(number)
+        number = int(match.groups()[0])
+        low, high =  int(-math.pow(2, 31)), int(math.pow(2, 31) - 1)
+        if number > high:
+            return high
+        if number < low:
+            return low
 
-
+        return number
 
 
 data = [
