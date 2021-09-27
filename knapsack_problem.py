@@ -30,6 +30,7 @@ def iter_knapsack(total, weights, values):
             if j == 0:
                 result[i][j] = 0
             else:
+
                 i_weight = weights[i]
                 i_value = values[i]
                 a, b = 0, 0
@@ -40,7 +41,6 @@ def iter_knapsack(total, weights, values):
                         a += result[i-1][diff]
                 if i> 0:
                     b = result[i-1][j]
-                print(i, i)
                 result[i][j] = max(a, b)
 
     return result[i][j]
